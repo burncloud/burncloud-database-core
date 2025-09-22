@@ -1,0 +1,21 @@
+[package]
+name = "burncloud-database-core"
+version = "0.1.0"
+edition = "2021"
+authors = ["BurnCloud Team <team@burncloud.com>"]
+description = "Core database abstractions and traits for BurnCloud AI management system"
+documentation = "https://docs.rs/burncloud-database-core"
+homepage = "https://github.com/burncloud/burncloud-database"
+repository = "https://github.com/burncloud/burncloud-database"
+license = "MIT OR Apache-2.0"
+keywords = ["database", "ai", "model-management", "burncloud", "async"]
+categories = ["database", "api-bindings", "development-tools"]
+readme = "README.md"
+
+[dependencies]
+async-trait = "0.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
