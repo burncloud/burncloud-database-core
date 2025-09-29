@@ -1,0 +1,24 @@
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum DatabaseError {
+    #[error("Database connection error: {0}")]
+    Connection(#[from] sqlx::Error),
+
+    #[error("Migration error: {0}")]
+    Migration(String),
+
+    #[error("Query error: {0}")]
+    Query(String),
+
+    #[error("Serialization error: {0}")]
+    Serialization(#[from] serde_json::Error),
+
+    #[error("Database not initialized")]
+    NotInitialized,
+
+    #[error("IO error: {0}")]
+    Io(#[from] std::io::Error),
+}
+
+pub type Result<T> = std::result::Result<T, DatabaseError>;
