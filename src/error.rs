@@ -17,6 +17,12 @@ pub enum DatabaseError {
     #[error("Database not initialized")]
     NotInitialized,
 
+    #[error("Failed to resolve default database path: {0}")]
+    PathResolution(String),
+
+    #[error("Failed to create database directory: {0}")]
+    DirectoryCreation(String),
+
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
 }
