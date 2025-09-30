@@ -103,6 +103,36 @@ impl Database {
         Ok(result)
     }
 
+    pub async fn execute_query_with_params(&self, query: &str, params: Vec<String>) -> Result<sqlx::sqlite::SqliteQueryResult> {
+        let conn = self.connection()?;
+        let mut query_builder = sqlx::query(query);
+
+        for param in params {
+            query_builder = query_builder.bind(param);
+        }
+
+        let result = query_builder.execute(conn.pool()).await?;
+        Ok(result)
+    }
+
+    pub async fn query(&self, query: &str) -> Result<Vec<sqlx::sqlite::SqliteRow>> {
+        let conn = self.connection()?;
+        let rows = sqlx::query(query).fetch_all(conn.pool()).await?;
+        Ok(rows)
+    }
+
+    pub async fn query_with_params(&self, query: &str, params: Vec<String>) -> Result<Vec<sqlx::sqlite::SqliteRow>> {
+        let conn = self.connection()?;
+        let mut query_builder = sqlx::query(query);
+
+        for param in params {
+            query_builder = query_builder.bind(param);
+        }
+
+        let rows = query_builder.fetch_all(conn.pool()).await?;
+        Ok(rows)
+    }
+
     pub async fn fetch_one<T>(&self, query: &str) -> Result<T>
     where
         T: for<'r> sqlx::FromRow<'r, sqlx::sqlite::SqliteRow> + Send + Unpin,
